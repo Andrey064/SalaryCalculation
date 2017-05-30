@@ -13,6 +13,7 @@ using System.Windows.Forms;
 
 
 
+
 namespace SalaryCalculation
 {
     public partial class FrmMain : Form
@@ -24,7 +25,6 @@ namespace SalaryCalculation
         private string salaryBaseTotal;
         private string salaryDopTotal;
         private string salaryFullTotal;
-
 
         TextBox txtBox;
         Label lbl;
@@ -379,58 +379,65 @@ namespace SalaryCalculation
             dgvPersons.GridColor = SystemColors.ControlDarkDark;
         }
 
+
+        private void sdf(Microsoft.Office.Interop.Excel.Application excel) { }
+
+
+
         private void btnExportToXls_Click(object sender, EventArgs e)
         {
             try
             {
-                var table = (DataTable)dgvPersons.DataSource;
-
+                int departmentCount = departmentService.GetAllDepartment().Count;
+                int personCount = personService.GetAllPersons().Rows.Count;
+                int excelRange = departmentCount + personCount;
                 Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
 
                 excel.Workbooks.Add();
 
+                excel.Visible = true;
+
                 var allDepartments = departmentService.GetAllDepartment();
 
-                int rowIndex = 0;
+                excel.Cells[1, 1].EntireRow.Font.Bold = true;
+                excel.Cells[1, 1].EntireRow.
+
+                excel.Cells[1, 1] = "Отдел";
+                excel.Cells[1, 2] = "Фамилия";
+                excel.Cells[1, 3] = "Имя";
+                excel.Cells[1, 4] = "Отчество";
+                excel.Cells[1, 5] = "Зарплата";
+                excel.Cells[1, 6] = "Надбавка";
+                excel.Cells[1, 7] = "Премия";
+                excel.Cells[1, 8] = "Всего";
+
+                int rowIndex = 1;
                 foreach (Department department in allDepartments)
                 {
-                    rowIndex++;
-                    excel.Cells[rowIndex, 1] = department.DepName;
-                    
-
-                    DataTable data = personService.GetPersonsByDepartmentId(department.DepartmentID);
-
-                    List<Person> persons = data.DataTableToList<Person>();
-                    
-                    foreach (Person person in persons)
+                    if (department.DepartmentID > 0)
                     {
                         rowIndex++;
-                        excel.Cells[rowIndex, 2] = person.Surname;
-                        excel.Cells[rowIndex, 3] = person.Name;
-                        excel.Cells[rowIndex, 4] = person.Patronymic;
-                    }
+                        excel.Cells[rowIndex, 1] = department.DepName;
 
+                        DataTable data = personService.GetPersonsByDepartmentId(department.DepartmentID);
+
+                        List<Person> persons = data.DataTableToList<Person>();
+
+                        foreach (Person person in persons)
+                        {
+                            rowIndex++;
+                            excel.Cells[rowIndex, 2] = person.Surname;
+                            excel.Cells[rowIndex, 3] = person.Name;
+                            excel.Cells[rowIndex, 4] = person.Patronymic;
+                            excel.Cells[rowIndex, 5] = person.SalaryBase;
+                            excel.Cells[rowIndex, 6] = person.SalaryDop;
+                            excel.Cells[rowIndex, 7] = person.Bonus;
+                            excel.Cells[rowIndex, 8] = person.SalaryFull;
+                        }
+                    }
                 }
 
 
-                //foreach (DataColumn col in table.Columns)
-                //{
-                //    columnIndex++;
-                //    excel.Cells[1, columnIndex] = col.ColumnName;
-                //}
-
-                //int rowIndex = 0;
-                //foreach (DataRow row in table.Rows)
-                //{
-                //    rowIndex++;
-                //    columnIndex = 0;
-                //    foreach (DataColumn col in table.Columns)
-                //    {
-                //        columnIndex++;
-                //        excel.Cells[rowIndex + 1, columnIndex] = row[col.ColumnName].ToString();
-                //    }
-                //}
-                excel.Visible = true;
                 Microsoft.Office.Interop.Excel.Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)excel.ActiveSheet;
                 worksheet.Activate();
             }
@@ -565,7 +572,7 @@ namespace SalaryCalculation
             {
                 Department department = (Department)cmb3Department.SelectedValue;
 
-                DataTable data = this.personService.SearchPersons(department==null ? 0 : department.DepartmentID, txt3Surname.Text);
+                DataTable data = this.personService.SearchPersons(department == null ? 0 : department.DepartmentID, txt3Surname.Text);
                 this.LoadDataGridView(data);
             }
             catch (Exception ex)
