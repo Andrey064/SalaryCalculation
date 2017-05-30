@@ -401,12 +401,13 @@ namespace SalaryCalculation
                     DataTable data = personService.GetPersonsByDepartmentId(department.DepartmentID);
 
                     List<Person> persons = data.DataTableToList<Person>();
-
-                    int columnIndex = 0;
+                    
                     foreach (Person person in persons)
                     {
                         rowIndex++;
-                        excel.Cells[rowIndex, columnIndex] = person.Name;
+                        excel.Cells[rowIndex, 2] = person.Surname;
+                        excel.Cells[rowIndex, 3] = person.Name;
+                        excel.Cells[rowIndex, 4] = person.Patronymic;
                     }
 
                 }
