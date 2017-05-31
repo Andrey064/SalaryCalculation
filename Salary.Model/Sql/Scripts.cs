@@ -19,7 +19,7 @@ namespace Salary.Model.Sql
         /// sql get all persons
         /// </summary>
         public static readonly string SqlGetAllPersons = "Select " +
-            " PersonID, Name, Surname, Patronymic, DepartmentID, SalaryBase, SalaryDop, Bonus, SalaryFull" +
+            " PersonID, Surname, Name, Patronymic, DepartmentID, SalaryBase, SalaryDop, Bonus, SalaryFull" +
             " From Person";
 
         /// <summary>

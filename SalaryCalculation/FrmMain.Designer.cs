@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabPageNewPerson = new System.Windows.Forms.TabPage();
             this.tabControlPerson = new System.Windows.Forms.TabControl();
@@ -111,7 +111,7 @@
             this.tabMain.Name = "tabMain";
             this.tabMain.SelectedIndex = 0;
             this.tabMain.Size = new System.Drawing.Size(1141, 522);
-            this.tabMain.TabIndex = 0;
+            this.tabMain.TabIndex = 8;
             this.tabMain.SelectedIndexChanged += new System.EventHandler(this.tabMain_SelectedIndexChanged);
             // 
             // tabPageNewPerson
@@ -208,11 +208,12 @@
             // 
             // cmbDepartment
             // 
+            this.cmbDepartment.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDepartment.FormattingEnabled = true;
             this.cmbDepartment.Location = new System.Drawing.Point(138, 118);
             this.cmbDepartment.Name = "cmbDepartment";
             this.cmbDepartment.Size = new System.Drawing.Size(182, 24);
-            this.cmbDepartment.TabIndex = 57;
+            this.cmbDepartment.TabIndex = 3;
             // 
             // btnAddPerson
             // 
@@ -220,7 +221,7 @@
             this.btnAddPerson.Location = new System.Drawing.Point(583, 151);
             this.btnAddPerson.Name = "btnAddPerson";
             this.btnAddPerson.Size = new System.Drawing.Size(95, 37);
-            this.btnAddPerson.TabIndex = 12;
+            this.btnAddPerson.TabIndex = 7;
             this.btnAddPerson.Text = "Добавить";
             this.btnAddPerson.UseVisualStyleBackColor = true;
             this.btnAddPerson.Click += new System.EventHandler(this.btnAddPerson_Click);
@@ -230,7 +231,7 @@
             this.txtBonus.Location = new System.Drawing.Point(481, 90);
             this.txtBonus.Name = "txtBonus";
             this.txtBonus.Size = new System.Drawing.Size(182, 22);
-            this.txtBonus.TabIndex = 11;
+            this.txtBonus.TabIndex = 6;
             this.txtBonus.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBonus_KeyPress);
             // 
             // lblBonus
@@ -247,7 +248,7 @@
             this.txtSalaryDop.Location = new System.Drawing.Point(481, 62);
             this.txtSalaryDop.Name = "txtSalaryDop";
             this.txtSalaryDop.Size = new System.Drawing.Size(182, 22);
-            this.txtSalaryDop.TabIndex = 9;
+            this.txtSalaryDop.TabIndex = 5;
             this.txtSalaryDop.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSalaryDop_KeyPress);
             // 
             // lblSalaryDop
@@ -264,7 +265,7 @@
             this.txtSalaryBase.Location = new System.Drawing.Point(481, 34);
             this.txtSalaryBase.Name = "txtSalaryBase";
             this.txtSalaryBase.Size = new System.Drawing.Size(182, 22);
-            this.txtSalaryBase.TabIndex = 7;
+            this.txtSalaryBase.TabIndex = 4;
             this.txtSalaryBase.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSalaryBase_KeyPress);
             // 
             // lblBaseSalary
@@ -281,7 +282,7 @@
             this.txtSurName.Location = new System.Drawing.Point(138, 34);
             this.txtSurName.Name = "txtSurName";
             this.txtSurName.Size = new System.Drawing.Size(182, 22);
-            this.txtSurName.TabIndex = 5;
+            this.txtSurName.TabIndex = 0;
             // 
             // lblSurName
             // 
@@ -297,7 +298,7 @@
             this.txtName.Location = new System.Drawing.Point(138, 62);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(182, 22);
-            this.txtName.TabIndex = 3;
+            this.txtName.TabIndex = 1;
             // 
             // lblName
             // 
@@ -313,7 +314,7 @@
             this.txtPatronymic.Location = new System.Drawing.Point(138, 90);
             this.txtPatronymic.Name = "txtPatronymic";
             this.txtPatronymic.Size = new System.Drawing.Size(182, 22);
-            this.txtPatronymic.TabIndex = 1;
+            this.txtPatronymic.TabIndex = 2;
             // 
             // lblPatronymic
             // 
@@ -344,7 +345,7 @@
             this.btnAddBonus.Location = new System.Drawing.Point(6, 117);
             this.btnAddBonus.Name = "btnAddBonus";
             this.btnAddBonus.Size = new System.Drawing.Size(195, 28);
-            this.btnAddBonus.TabIndex = 64;
+            this.btnAddBonus.TabIndex = 11;
             this.btnAddBonus.Text = "Начислить премию отделу";
             this.btnAddBonus.UseVisualStyleBackColor = true;
             this.btnAddBonus.Click += new System.EventHandler(this.btnAddBonus_Click);
@@ -378,7 +379,6 @@
             this.groupBoxPerson.TabIndex = 63;
             this.groupBoxPerson.TabStop = false;
             this.groupBoxPerson.Text = "Сотрудник";
-            this.groupBoxPerson.Enter += new System.EventHandler(this.groupBoxPerson_Enter);
             // 
             // lblMoney
             // 
@@ -405,7 +405,7 @@
             this.txtBonusRub.Name = "txtBonusRub";
             this.txtBonusRub.ReadOnly = true;
             this.txtBonusRub.Size = new System.Drawing.Size(56, 22);
-            this.txtBonusRub.TabIndex = 75;
+            this.txtBonusRub.TabIndex = 7;
             // 
             // lbl2Department
             // 
@@ -423,7 +423,7 @@
             this.cmb2Department.Location = new System.Drawing.Point(129, 115);
             this.cmb2Department.Name = "cmb2Department";
             this.cmb2Department.Size = new System.Drawing.Size(167, 24);
-            this.cmb2Department.TabIndex = 73;
+            this.cmb2Department.TabIndex = 3;
             // 
             // txtSalaryFull
             // 
@@ -432,7 +432,7 @@
             this.txtSalaryFull.Location = new System.Drawing.Point(144, 256);
             this.txtSalaryFull.Name = "txtSalaryFull";
             this.txtSalaryFull.Size = new System.Drawing.Size(152, 22);
-            this.txtSalaryFull.TabIndex = 72;
+            this.txtSalaryFull.TabIndex = 8;
             // 
             // lblSalaryFull
             // 
@@ -450,7 +450,7 @@
             this.txt2Bonus.Location = new System.Drawing.Point(129, 201);
             this.txt2Bonus.Name = "txt2Bonus";
             this.txt2Bonus.Size = new System.Drawing.Size(55, 22);
-            this.txt2Bonus.TabIndex = 70;
+            this.txt2Bonus.TabIndex = 6;
             this.txt2Bonus.TextChanged += new System.EventHandler(this.txt2Bonus_TextChanged);
             this.txt2Bonus.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt2Bonus_KeyPress);
             // 
@@ -469,7 +469,7 @@
             this.txt2SalaryDop.Location = new System.Drawing.Point(129, 173);
             this.txt2SalaryDop.Name = "txt2SalaryDop";
             this.txt2SalaryDop.Size = new System.Drawing.Size(167, 22);
-            this.txt2SalaryDop.TabIndex = 68;
+            this.txt2SalaryDop.TabIndex = 5;
             this.txt2SalaryDop.TextChanged += new System.EventHandler(this.txt2SalaryDop_TextChanged);
             this.txt2SalaryDop.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt2SalaryDop_KeyPress);
             // 
@@ -488,7 +488,7 @@
             this.txt2SalaryBase.Location = new System.Drawing.Point(129, 145);
             this.txt2SalaryBase.Name = "txt2SalaryBase";
             this.txt2SalaryBase.Size = new System.Drawing.Size(167, 22);
-            this.txt2SalaryBase.TabIndex = 66;
+            this.txt2SalaryBase.TabIndex = 4;
             this.txt2SalaryBase.TextChanged += new System.EventHandler(this.txt2SalaryBase_TextChanged);
             this.txt2SalaryBase.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt2SalaryBase_KeyPress);
             // 
@@ -507,7 +507,7 @@
             this.txt2Patronymic.Location = new System.Drawing.Point(129, 87);
             this.txt2Patronymic.Name = "txt2Patronymic";
             this.txt2Patronymic.Size = new System.Drawing.Size(167, 22);
-            this.txt2Patronymic.TabIndex = 64;
+            this.txt2Patronymic.TabIndex = 2;
             // 
             // lbl2Patronymic
             // 
@@ -524,7 +524,7 @@
             this.txt2Surname.Location = new System.Drawing.Point(129, 31);
             this.txt2Surname.Name = "txt2Surname";
             this.txt2Surname.Size = new System.Drawing.Size(167, 22);
-            this.txt2Surname.TabIndex = 62;
+            this.txt2Surname.TabIndex = 0;
             // 
             // lbl2Surname
             // 
@@ -541,7 +541,7 @@
             this.txt2Name.Location = new System.Drawing.Point(129, 59);
             this.txt2Name.Name = "txt2Name";
             this.txt2Name.Size = new System.Drawing.Size(167, 22);
-            this.txt2Name.TabIndex = 60;
+            this.txt2Name.TabIndex = 1;
             // 
             // lbl2Name
             // 
@@ -557,7 +557,7 @@
             this.btnUpdate.Location = new System.Drawing.Point(129, 301);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(84, 27);
-            this.btnUpdate.TabIndex = 58;
+            this.btnUpdate.TabIndex = 9;
             this.btnUpdate.Text = "Обновить";
             this.btnUpdate.UseVisualStyleBackColor = true;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
@@ -567,7 +567,7 @@
             this.btnDelete.Location = new System.Drawing.Point(219, 301);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(77, 27);
-            this.btnDelete.TabIndex = 57;
+            this.btnDelete.TabIndex = 10;
             this.btnDelete.Text = "Удалить";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
@@ -596,7 +596,6 @@
             this.tabPageSearch.TabIndex = 0;
             this.tabPageSearch.Text = "Поиск";
             this.tabPageSearch.UseVisualStyleBackColor = true;
-            this.tabPageSearch.Click += new System.EventHandler(this.tabPageSearch_Click);
             // 
             // txt3Surname
             // 
@@ -604,7 +603,7 @@
             this.txt3Surname.Location = new System.Drawing.Point(204, 30);
             this.txt3Surname.Name = "txt3Surname";
             this.txt3Surname.Size = new System.Drawing.Size(152, 22);
-            this.txt3Surname.TabIndex = 45;
+            this.txt3Surname.TabIndex = 1;
             // 
             // lbl3Name
             // 
@@ -620,7 +619,7 @@
             this.btnRefresh.Location = new System.Drawing.Point(482, 26);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(100, 28);
-            this.btnRefresh.TabIndex = 9;
+            this.btnRefresh.TabIndex = 3;
             this.btnRefresh.Text = "Очистить";
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
@@ -630,7 +629,7 @@
             this.btnSearch.Location = new System.Drawing.Point(376, 26);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(100, 28);
-            this.btnSearch.TabIndex = 8;
+            this.btnSearch.TabIndex = 2;
             this.btnSearch.Text = "Найти";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
@@ -653,14 +652,14 @@
             this.cmb3Department.Location = new System.Drawing.Point(29, 29);
             this.cmb3Department.Name = "cmb3Department";
             this.cmb3Department.Size = new System.Drawing.Size(162, 24);
-            this.cmb3Department.TabIndex = 4;
+            this.cmb3Department.TabIndex = 0;
             // 
             // btnExportToXls
             // 
             this.btnExportToXls.Location = new System.Drawing.Point(676, 117);
             this.btnExportToXls.Name = "btnExportToXls";
             this.btnExportToXls.Size = new System.Drawing.Size(117, 28);
-            this.btnExportToXls.TabIndex = 52;
+            this.btnExportToXls.TabIndex = 12;
             this.btnExportToXls.Text = "Экспорт в XLS";
             this.btnExportToXls.UseVisualStyleBackColor = true;
             this.btnExportToXls.Click += new System.EventHandler(this.btnExportToXls_Click);
@@ -670,14 +669,14 @@
             this.dgvPersons.AllowUserToAddRows = false;
             this.dgvPersons.AllowUserToOrderColumns = true;
             this.dgvPersons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleVertical;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPersons.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPersons.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvPersons.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPersons.Location = new System.Drawing.Point(6, 151);
             this.dgvPersons.Name = "dgvPersons";

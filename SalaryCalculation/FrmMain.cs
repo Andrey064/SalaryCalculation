@@ -7,11 +7,11 @@ using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-
+using Excel = Microsoft.Office.Interop.Excel;
 
 
 namespace SalaryCalculation
@@ -234,7 +234,9 @@ namespace SalaryCalculation
         private void ResizeColumns()
         {
             dgvPersons.Columns["PersonID"].Width = 30;
-            dgvPersons.Columns[1].Width = 60;
+            dgvPersons.Columns["Surname"].Width = 110;
+            dgvPersons.Columns["Name"].Width = 90;
+            dgvPersons.Columns["Patronymic"].Width = 100;
             dgvPersons.Columns["SalaryBase"].Width = 70;
             dgvPersons.Columns["SalaryDop"].Width = 70;
             dgvPersons.Columns["SalaryFull"].Width = 70;
@@ -245,8 +247,9 @@ namespace SalaryCalculation
         private void RenameColumns()
         {
             dgvPersons.Columns["PersonID"].HeaderText = "№";
-            dgvPersons.Columns["Name"].HeaderText = "Имя";
+            dgvPersons.Columns["PersonID"].Visible = false;
             dgvPersons.Columns["Surname"].HeaderText = "Фамилия";
+            dgvPersons.Columns["Name"].HeaderText = "Имя";
             dgvPersons.Columns["Patronymic"].HeaderText = "Отчество";
             dgvPersons.Columns["SalaryBase"].HeaderText = "Сумма руб.";
             dgvPersons.Columns["SalaryDop"].HeaderText = "Доплата руб.";
@@ -388,64 +391,146 @@ namespace SalaryCalculation
         {
             try
             {
-                int departmentCount = departmentService.GetAllDepartment().Count;
-                int personCount = personService.GetAllPersons().Rows.Count;
-                int excelRange = departmentCount + personCount;
-                Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
+                List<Department> departments = departmentService.GetAllDepartment();
+                DataTable allPersons = personService.GetAllPersons();
 
-                excel.Workbooks.Add();
+                Excel.Application xlApp = new Excel.Application();
 
-                excel.Visible = true;
+                if (xlApp == null)
+                {
+                    MessageBox.Show("Excel не установлен!");
+                    return;
+                }
 
-                var allDepartments = departmentService.GetAllDepartment();
+                Excel.Workbook xlWorkBook = xlApp.Workbooks.Add();
+                Excel.Worksheet xlWorkSheet = xlWorkBook.Worksheets.get_Item(1);
 
-                excel.Cells[1, 1].EntireRow.Font.Bold = true;
-                excel.Cells[1, 1].EntireRow.
+                xlApp.Visible = true;
 
-                excel.Cells[1, 1] = "Отдел";
-                excel.Cells[1, 2] = "Фамилия";
-                excel.Cells[1, 3] = "Имя";
-                excel.Cells[1, 4] = "Отчество";
-                excel.Cells[1, 5] = "Зарплата";
-                excel.Cells[1, 6] = "Надбавка";
-                excel.Cells[1, 7] = "Премия";
-                excel.Cells[1, 8] = "Всего";
+                XlsHead(xlWorkSheet);
+                SetColumnWidth(xlWorkSheet);
 
-                int rowIndex = 1;
-                foreach (Department department in allDepartments)
+                int rowIndex = 4;
+                foreach (Department department in departments)
                 {
                     if (department.DepartmentID > 0)
                     {
-                        rowIndex++;
-                        excel.Cells[rowIndex, 1] = department.DepName;
+                        xlWorkSheet.Cells[rowIndex, 1] = department.DepName;
 
                         DataTable data = personService.GetPersonsByDepartmentId(department.DepartmentID);
-
+                        if (data.Rows.Count==0)
+                        {
+                            return;
+                        }
                         List<Person> persons = data.DataTableToList<Person>();
+                        int rowCount = rowIndex + persons.Count;
+                        BorderAround(xlWorkSheet, rowIndex+1, rowCount+1);
 
+                        HeadRow(xlWorkSheet, rowIndex+1);
                         foreach (Person person in persons)
                         {
-                            rowIndex++;
-                            excel.Cells[rowIndex, 2] = person.Surname;
-                            excel.Cells[rowIndex, 3] = person.Name;
-                            excel.Cells[rowIndex, 4] = person.Patronymic;
-                            excel.Cells[rowIndex, 5] = person.SalaryBase;
-                            excel.Cells[rowIndex, 6] = person.SalaryDop;
-                            excel.Cells[rowIndex, 7] = person.Bonus;
-                            excel.Cells[rowIndex, 8] = person.SalaryFull;
+                            FillRows(xlWorkSheet, ++rowIndex+1, person);
                         }
+
+                        object salaryBase = data.Compute("Sum(SalaryBase)", "");
+                        object salaryDop = data.Compute("Sum(SalaryDop)", "");
+                        object salaryFull = data.Compute("Sum(SalaryFull)", "");
+
+                        TotalRow(xlWorkSheet, rowIndex+2, salaryBase, salaryDop, salaryFull);
+
+                        rowIndex = rowCount + 3;
                     }
                 }
 
+                object sum = allPersons.Compute("Sum(SalaryBase)", "");
+                object sum1 = allPersons.Compute("Sum(SalaryDop)", "");
+                object sum2 = allPersons.Compute("Sum(SalaryFull)", "");
 
-                Microsoft.Office.Interop.Excel.Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)excel.ActiveSheet;
-                worksheet.Activate();
+                TotalRow(xlWorkSheet, rowIndex+2, sum, sum1, sum2);
+
             }
             catch (Exception ex)
             {
                 this.ShowErrorMessage(ex);
             }
 
+        }
+
+        private static void TotalRow(Excel.Worksheet xlWorkSheet, int rowIndex, object sum, object sum1, object sum2)
+        {
+            Excel.Range chartRange;
+            xlWorkSheet.get_Range("a" + rowIndex, "c" + rowIndex).Merge(false);
+            chartRange = xlWorkSheet.get_Range("a" + rowIndex, "c" + rowIndex);
+            chartRange.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+
+            chartRange.FormulaR1C1 = "Итого";
+
+            xlWorkSheet.Cells[rowIndex, 4] = sum == null ? 0 : Convert.ToDecimal(sum);
+            xlWorkSheet.Cells[rowIndex, 5] = sum1 == null ? 0 : Convert.ToDecimal(sum1);
+            xlWorkSheet.Cells[rowIndex, 7] = sum2 == null ? 0 : Convert.ToDecimal(sum2);
+        }
+
+        private static void FillRows(Excel.Worksheet xlWorkSheet, int rowIndex, Person person)
+        {
+            xlWorkSheet.Cells[rowIndex, 1] = person.Surname;
+            xlWorkSheet.Cells[rowIndex, 2] = person.Name;
+            xlWorkSheet.Cells[rowIndex, 3] = person.Patronymic;
+            xlWorkSheet.Cells[rowIndex, 4] = person.SalaryBase;
+            xlWorkSheet.Cells[rowIndex, 5] = person.SalaryDop;
+            xlWorkSheet.Cells[rowIndex, 6] = person.Bonus;
+            xlWorkSheet.Cells[rowIndex, 7] = person.SalaryFull;
+        }
+
+        private static void BorderAround(Excel.Worksheet xlWorkSheet, int row, int rowCount)
+        {
+            Excel.Range formatRange = xlWorkSheet.get_Range("a" + row, "g" + rowCount);
+            formatRange.BorderAround(Excel.XlLineStyle.xlContinuous,
+            Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic,
+            Excel.XlColorIndex.xlColorIndexAutomatic);
+        }
+
+        private static void SetColumnWidth(Excel.Worksheet xlWorkSheet)
+        {
+            Excel.Range a = xlWorkSheet.get_Range("a:a");
+            a.ColumnWidth = 12;
+            Excel.Range c = xlWorkSheet.get_Range("c:c");
+            c.ColumnWidth = 12;
+            Excel.Range d = xlWorkSheet.get_Range("d:d");
+            d.ColumnWidth = 12;
+            Excel.Range e = xlWorkSheet.get_Range("e:e");
+            e.ColumnWidth = 12;
+            Excel.Range g = xlWorkSheet.get_Range("g:g");
+            g.ColumnWidth = 12;
+        }
+
+        private static void HeadRow(Excel.Worksheet xlWorkSheet, int rowIndex)
+        {
+            Excel.Range formatRange = xlWorkSheet.get_Range("a" + rowIndex, "g" + rowIndex);
+            formatRange.Interior.Color = ColorTranslator.ToOle(Color.LightGray);
+            formatRange.Font.Color = Color.Black;
+            xlWorkSheet.Cells[rowIndex, 1] = "Фамилия";
+            xlWorkSheet.Cells[rowIndex, 2] = "Имя";
+            xlWorkSheet.Cells[rowIndex, 3] = "Отчество";
+            xlWorkSheet.Cells[rowIndex, 4] = "Зарплата руб.";
+            xlWorkSheet.Cells[rowIndex, 5] = "Надбавка руб.";
+            xlWorkSheet.Cells[rowIndex, 6] = "Премия %";
+            xlWorkSheet.Cells[rowIndex, 7] = "Всего руб.";
+        }
+
+        //Заголовок отчета
+        private static Excel.Range XlsHead(Excel.Worksheet xlWorkSheet)
+        {
+            Excel.Range chartRange;
+            xlWorkSheet.get_Range("b1", "e2").Merge(false);
+            chartRange = xlWorkSheet.get_Range("b1", "e2");
+            chartRange.FormulaR1C1 = "Отчет по зарплате";
+            chartRange.HorizontalAlignment = 3;
+            chartRange.VerticalAlignment = 3;
+            //chartRange.Interior.Color = ColorTranslator.ToOle(Color.LightGray);
+            chartRange.Font.Color = ColorTranslator.ToOle(Color.Black);
+            chartRange.Font.Size = 18;
+
+            return chartRange;
         }
 
         /// <summary>
@@ -666,16 +751,6 @@ namespace SalaryCalculation
         private void txtBonus_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar) && (e.KeyChar != ',');
-        }
-
-        private void tabPageSearch_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBoxPerson_Enter(object sender, EventArgs e)
-        {
-
         }
     }
 }
