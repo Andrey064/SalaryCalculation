@@ -389,8 +389,9 @@ namespace SalaryCalculation
 
         private void btnExportToXls_Click(object sender, EventArgs e)
         {
-            try
+            try 
             {
+
                 List<Department> departments = departmentService.GetAllDepartment();
                 DataTable allPersons = personService.GetAllPersons();
 
